@@ -114,8 +114,8 @@ final class StatisticServiceImplementation: StatisticService {
         
         totalAccuracy = 100 * (Double(totalCorrectCount) / Double(totalAmount))
         
-        var newBestGame = GameRecord(correct: count, total: amount, date: Date())
-        var previuosBestGame = bestGame
+        let newBestGame = GameRecord(correct: count, total: amount, date: Date())
+        let previuosBestGame = bestGame
         
         if newBestGame.isBetterThan(previuosBestGame) {
             guard let data = try? JSONEncoder().encode(newBestGame) else {

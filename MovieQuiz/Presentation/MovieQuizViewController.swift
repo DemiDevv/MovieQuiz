@@ -90,12 +90,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
             self.imageView.layer.borderColor = UIColor.ypBlack.cgColor
-           self.showNextQuestionOrResults()
+            self.showNextQuestionOrResults()
         }
     }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, вы ответили на 10 из 10!" :
             "Вы ответили на: \(correctAnswers)/10, попробуйте еще раз!"
@@ -104,15 +105,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                         text: text,
                         buttonText: "Сыграть ещё раз")
                     show(quiz: viewModel)
-            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+            
         } else {
             currentQuestionIndex += 1
             questionFactory?.self.requestNextQuestion()
         }
-        
     }
-    
-    
     
     @IBAction private func noButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else { return }
@@ -127,6 +125,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let givenAnswer = true
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
     }
     
     struct ViewModel {
