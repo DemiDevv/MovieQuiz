@@ -5,10 +5,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    
     @IBOutlet private weak var imageView: UIImageView!
-    
-    
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -89,6 +88,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
             self.imageView.layer.borderColor = UIColor.ypBlack.cgColor
             self.showNextQuestionOrResults()
         }
@@ -113,6 +114,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
+        noButton.isEnabled = false
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = false
         
@@ -121,6 +123,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
+        yesButton.isEnabled = false
         guard let currentQuestion = currentQuestion else { return }
         let givenAnswer = true
         
